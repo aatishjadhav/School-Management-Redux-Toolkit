@@ -70,14 +70,20 @@ export const studentsSlice = createSlice({
     builder.addCase(addStudent.fulfilled, (state, action) => {
       state.students.push(action.payload);
     });
+    // builder.addCase(updateStudent.fulfilled, (state, action) => {
+    //   const index = state.students.findIndex(
+    //     (stu) => stu._id === action.payload._id
+    //   );
+    //   if (index !== -1) {
+    //     state.students[index] = action.payload;
+    //   }
+    // });
     builder.addCase(updateStudent.fulfilled, (state, action) => {
-      const index = state.students.findIndex(
-        (stu) => stu._id === action.payload._id
-      );
-      if (index !== -1) {
-        state.students[index] = action.payload;
-      }
-    });
+  state.students = state.students.map((stu) =>
+    stu._id === action.payload._id ? action.payload : stu
+  );
+});
+
     builder.addCase(deleteStudent.fulfilled, (state, action) => {
       state.students = state.students.filter(
         (stu) => stu._id !== action.payload
